@@ -2,18 +2,36 @@
 
 A pure javascript big fixed point number library base on `BigInt`.
 
-## install
+## Install
 
 `npm install bigfixed`
 
-## Dependencies
+## Description
 
 BigFixed range: ( -Inf, -(2**(-64)) ] & 0 & [ 2**(-64), +Inf )
 
 BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
 
+## [Compare](https://github.com/GeekBerry/bigFixed/blob/master/example/compare.js)
 
-## Usage
+```text
+Compare of big number lib
+test number: 5073.876555537511, 
+test count: 100000
+
+Each duration in nano seconds (1e-9s):
+Operate   BigFixed  BigNumber Big       Decimal   
+new       3340      700       360       580       
+add       130       220       350       290       
+sub       120       240       510       460       
+mul       320       410       1120      680       
+div       920       3810      7620      3480      
+pow       480       1340      3990      2290      
+str       1060      210       430       260       
+```
+
+
+## [Usage](https://github.com/GeekBerry/bigFixed/blob/master/example/usage.js)
 
 * BigFixed own prototype names
 ```javascript
@@ -153,3 +171,7 @@ console.log(BigFixed(3.49).toInteger().toString());
 console.log(BigFixed(3.49).toInteger(BigFixed.FLOOR).toString());
 // 3
 ```
+
+## [Test](https://github.com/GeekBerry/bigFixed/blob/master/test/BigFixed.test.js)
+
+`jest`

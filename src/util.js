@@ -6,6 +6,7 @@
  */
 
 const FLOAT64_EXP_OFFSET = BigInt(1023); // (2**11/2 - 1)
+const FLOAT64_FRAC_TOWS =  BigInt(1) << BigInt(52);
 const UINT64_SIGN = BigInt(1) << BigInt(63);
 
 const VIEW64 = new DataView(new ArrayBuffer(8)); // 8=64/8
@@ -78,7 +79,7 @@ function compileNumber(number) {
   let fraction = slice(uInt64, 12, 64);
 
   if (exp) {
-    fraction |= BigInt(1) << BigInt(52);
+    fraction |= FLOAT64_FRAC_TOWS;
   }
 
   return (sign ? -fraction : fraction) << (exp - FLOAT64_EXP_OFFSET + BigInt(12));
@@ -101,7 +102,7 @@ function compileString(string) {
 
     const int = BigInt(intString);
     const frac = compileNumber(Number(`0.${fracString}`));
-    const fixed = abs(int) << BigInt(64) | frac;
+    const fixed = (abs(int) << BigInt(64)) | frac;
 
     return int < BigInt(0) ? -fixed : fixed;
   }
