@@ -16,18 +16,18 @@ BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
 
 ```text
 Compare of big number lib
-test number: 5073.876555537511, 
+test number: 7639.761792834918, 
 test count: 100000
 
 Each duration in nano seconds (1e-9s):
 Operate   BigFixed  BigNumber Big       Decimal   
-new       3340      700       360       580       
-add       130       220       350       290       
-sub       120       240       510       460       
-mul       320       410       1120      680       
-div       920       3810      7620      3480      
-pow       480       1340      3990      2290      
-str       1060      210       430       260       
+new       3220      1830      750       1280      
+add       210       520       640       660       
+sub       250       520       910       910       
+mul       620       890       2370      1210      
+div       1610      6550      12930     5800      
+pow       740       2210      6920      4210      
+str       1960      430       670       420      
 ```
 
 

@@ -18,7 +18,7 @@ const number = Math.random() * 10000;
 
 const bigFixed = BigFixed(number);
 const bigFixedTest = {
-  new: () => new BigFixed(3.14),
+  new: () => BigFixed(3.14),
   add: () => bigFixed.add(bigFixed),
   sub: () => bigFixed.sub(bigFixed),
   mul: () => bigFixed.mul(bigFixed),
@@ -29,7 +29,7 @@ const bigFixedTest = {
 
 const bigNumber = BigNumber(number);
 const bigNumberTest = {
-  new: () => new BigNumber(3.14),
+  new: () => BigNumber(3.14),
   add: () => bigNumber.plus(bigNumber),
   sub: () => bigNumber.minus(bigNumber),
   mul: () => bigNumber.times(bigNumber),
@@ -40,7 +40,7 @@ const bigNumberTest = {
 
 const big = Big(number);
 const bigTest = {
-  new: () => new Big(3.14),
+  new: () => Big(3.14),
   add: () => big.plus(big),
   sub: () => big.minus(big),
   mul: () => big.times(big),
@@ -51,7 +51,7 @@ const bigTest = {
 
 const decimal = Decimal(number);
 const decimalTest = {
-  new: () => new Decimal(3.14),
+  new: () =>  Decimal(3.14),
   add: () => decimal.plus(decimal),
   sub: () => decimal.minus(decimal),
   mul: () => decimal.times(decimal),

@@ -6,7 +6,7 @@
  */
 
 const FLOAT64_EXP_OFFSET = BigInt(1023); // (2**11/2 - 1)
-const FLOAT64_FRAC_TOWS =  BigInt(1) << BigInt(52);
+const FLOAT64_FRAC_TOWS = BigInt(1) << BigInt(52);
 const UINT64_SIGN = BigInt(1) << BigInt(63);
 
 const VIEW64 = new DataView(new ArrayBuffer(8)); // 8=64/8
