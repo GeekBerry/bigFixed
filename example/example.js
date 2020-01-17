@@ -1,22 +1,33 @@
-# BigFixed
+const BigFixed = require('../src');
 
-A pure javascript big fixed point number library base on `BigInt`.
+// ================= Show BigFixed structure in binary data ===================
+function dump(bigFixed) {
+  let bigInt = bigFixed.fixed;
 
-## install
+  return [
+    BigInt.asUintN(64, bigInt >> BigInt(64)), // integer
+    BigInt.asUintN(64, bigInt), // frac
+  ].map(bi => bi.toString(2).padStart(64, '0')).join('|');
+}
 
-`npm install bigfixed`
+console.log(dump(BigFixed(1)));
+// 0000000000000000000000000000000000000000000000000000000000000001|0000000000000000000000000000000000000000000000000000000000000000
 
-## Dependencies
+console.log(dump(BigFixed(0.125)));
+// 0000000000000000000000000000000000000000000000000000000000000000|0010000000000000000000000000000000000000000000000000000000000000
 
-BigFixed range: ( -Inf, -(2**(-64)) ] & 0 & [ 2**(-64), +Inf )
+console.log(dump(BigFixed(-1)));
+// 1111111111111111111111111111111111111111111111111111111111111111|0000000000000000000000000000000000000000000000000000000000000000
 
-BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
+console.log(dump(BigFixed(-0.125)));
+// 1111111111111111111111111111111111111111111111111111111111111111|1110000000000000000000000000000000000000000000000000000000000000
 
+console.log(dump(BigFixed(3.14)));
+// 0000000000000000000000000000000000000000000000000000000000000011|0010001111010111000010100011110101110000101000111110000000000000
 
-## Usage
-
-* BigFixed own prototype names
-```javascript
+// ============================================================================
+console.log(Object.getOwnPropertyNames(BigFixed.prototype));
+/*
 [
   'constructor', 'clone',     'isZero',
   'isNegative',  'isInteger', 'eq',
@@ -29,13 +40,9 @@ BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
   'toInteger',   'toNumber',  'toJSON',
   'toString'
 ]
-```
+ */
 
-* Create
-
-```javascript
-const BigFixed = require('bigfixed');
-
+// ============================================================================
 console.log(BigFixed(-3.14));
 // BigFixed { fixed: -57922776391447994368n }
 
@@ -71,11 +78,8 @@ console.log(BigFixed(true).toString());
 
 console.log(BigFixed(false).toString());
 // 0
-```
 
-* Arithmetic
-
-```javascript
+// ============================= Arithmetic ===================================
 console.log(BigFixed(125.25).add(100).toString());
 // 225.25
 console.log(BigFixed(Number.MAX_SAFE_INTEGER).add(Number.MAX_SAFE_INTEGER).toString());
@@ -105,11 +109,8 @@ console.log(BigFixed(5).pow(2).toString());
 // 25
 console.log(BigFixed(3.14).pow(100).toString());
 // 49313384166056347098523752010452971971940876154701.029803568081556285
-```
 
-* Logical
-
-```javascript
+// ============================= Logical ===================================
 console.log('Logical');
 
 console.log(BigFixed(0x0f).not().toString(16));
@@ -132,13 +133,8 @@ console.log(BigFixed(0x0f).lShift(1).toString(16));
 
 console.log(BigFixed(0x0f).rShift(1).toString(16));
 // 7.8
-```
 
-* To integer
-
-same as Math.round, Math.ceil, Math.floor, default `BigFixed.ROUND`
-
-```javascript
+// ============================================================================
 console.log(BigFixed(3.51).toInteger(BigFixed.CEIL).toString());
 // 4
 console.log(BigFixed(3.51).toInteger().toString());
@@ -152,4 +148,3 @@ console.log(BigFixed(3.49).toInteger().toString());
 // 3
 console.log(BigFixed(3.49).toInteger(BigFixed.FLOOR).toString());
 // 3
-```

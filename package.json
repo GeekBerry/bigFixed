@@ -1,0 +1,24 @@
+{
+  "name": "bigfixed",
+  "version": "0.0.1",
+  "description": "big fixed point number base on BigInt",
+  "keywords": [
+    "bigNumber",
+    "fixed",
+    "BigInt",
+    "binary"
+  ],
+  "author": "geekberry@qq.com",
+  "license": "MIT",
+  "repository": "https://github.com/GeekBerry/bigFixed.git",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
