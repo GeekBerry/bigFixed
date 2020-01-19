@@ -12,9 +12,8 @@ BigFixed range: ( -Inf, -(2**(-64)) ] & 0 & [ 2**(-64), +Inf )
 
 BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
 
-> NOTE: this lib is calculate by binary but not decimal number, 
-
-`BigFixed(0.1).add(0.2).toString() === "0.30000000000000004"`
+> NOTE: this lib is calculate by binary but not decimal number  
+> `BigFixed(0.1).add(0.2).toString() === "0.30000000000000004"`
 
 ## [Compare](https://github.com/GeekBerry/bigFixed/blob/master/example/compare.js)
 
@@ -126,7 +125,7 @@ console.log(BigFixed(0.8).mod(0.3).toString());
 console.log(BigFixed(5).pow(2).toString());
 // 25
 console.log(BigFixed(3.14).pow(100).toString());
-// 49313384166056347098523752010452971971940876154701.029803568081556285
+// 49313384166056347098523752010452971971940876154701.02980356808155629
 ```
 
 * Logical

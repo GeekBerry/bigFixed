@@ -10,10 +10,11 @@
     +--------------------------------+----------------------------------+
  */
 
-const { BIG_INT_0, BIG_INT_64, UINT64_SIGN, UINT64_TWOS, UINT64_TWOS_NUMBER } = require('./util');
+const { BIG_INT_0, BIG_INT_64, UINT64_SIGN, UINT64_TWOS } = require('./util');
 const { abs, slice, compileBigInt, compileBoolean, compileNumber, compileString } = require('./util');
 
-// --------------------------------------------------------------------------
+const UINT64_TWOS_NUMBER = Number(UINT64_TWOS);
+
 /**
  * @private
  * @param fracNumber {Number}

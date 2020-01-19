@@ -1,22 +1,13 @@
 const BIG_INT_0 = BigInt(0);
 const BIG_INT_64 = BigInt(64);
-
 const UINT64_SIGN = BigInt(1) << BigInt(63);
 const UINT64_TWOS = BigInt(1) << BigInt(64);
-const UINT64_TWOS_NUMBER = Number(UINT64_TWOS);
-
 const FLOAT64_FRAC_TOWS = BigInt(1) << BigInt(52);
-const FLOAT64_EXP_OFFSET = BigInt(1023); // (2**11/2 - 1)
-const FLOAT64_FRAC_OFFSET = BigInt(64) - BigInt(52) - FLOAT64_EXP_OFFSET;
+const FLOAT64_EXP_OFFSET = BigInt(64) - BigInt(52) - BigInt(1023); // 64 - 52 - (2**11/2 - 1)
 
-const VIEW64 = new DataView(new ArrayBuffer(8)); // 8=64/8
+const view64 = new DataView(new ArrayBuffer(8)); // 8=64/8
 
 // ----------------------------------------------------------------------------
-function float64ToUInt64(number) {
-  VIEW64.setFloat64(0, number);
-  return VIEW64.getBigUint64(0);
-}
-
 function abs(bigInt) {
   return bigInt < BIG_INT_0 ? -bigInt : bigInt;
 }
@@ -48,7 +39,8 @@ function compileBoolean(boolean) {
  * @return {BigInt}
  */
 function compileNumber(number) {
-  const uInt64 = float64ToUInt64(number);
+  view64.setFloat64(0, number);
+  const uInt64 = view64.getBigUint64(0);
 
   const sign = (uInt64 & UINT64_SIGN) ? 1 : 0;
   const exp = slice(uInt64, 1, 12);
@@ -58,7 +50,7 @@ function compileNumber(number) {
     fraction |= FLOAT64_FRAC_TOWS;
   }
 
-  return (sign ? -fraction : fraction) << (exp + FLOAT64_FRAC_OFFSET);
+  return (sign ? -fraction : fraction) << (exp + FLOAT64_EXP_OFFSET);
 }
 
 /**
@@ -92,7 +84,6 @@ module.exports = {
   BIG_INT_64,
   UINT64_SIGN,
   UINT64_TWOS,
-  UINT64_TWOS_NUMBER,
 
   abs,
   slice,
