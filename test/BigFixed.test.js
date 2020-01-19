@@ -162,7 +162,7 @@ describe('arithmetic operate', () => {
     const number = Math.random();
     expect(BigFixed(-number).add(number)).toEqual(BigFixed(0));
 
-    expect(BigFixed(0.1).add(0.2).toString()).toEqual('0.3');
+    expect(BigFixed(0.1).add(0.2).toString()).toEqual('0.30000000000000004');
   });
 
   test('sub', () => {
@@ -172,7 +172,7 @@ describe('arithmetic operate', () => {
 
   test('mul', () => {
     expect(BigFixed(2).mul(3).toString()).toEqual('6');
-    expect(BigFixed(-0.2).mul(3).toString()).toEqual('-0.6');
+    expect(BigFixed(-0.2).mul(3).toString()).toEqual('-0.6000000000000001');
     expect(BigFixed(2).mul(-30).toString()).toEqual('-60');
     expect(BigFixed(-20).mul(-30).toString()).toEqual('600');
   });
@@ -183,7 +183,7 @@ describe('arithmetic operate', () => {
     expect(BigFixed(2).div(3).toString()).toEqual('0.6666666666666666');
     expect(BigFixed(-20).div(3).toString()).toEqual('-6.6666666666666666');
     expect(BigFixed(2).div(-30).toString()).toEqual('-0.06666666666666667');
-    expect(BigFixed(-0.2).div(-30).toString()).toEqual('0.006666666666666666');
+    expect(BigFixed(-0.2).div(-30).toString()).toEqual('0.006666666666666667');
   });
 
   test('mod', () => {
@@ -298,6 +298,17 @@ describe('toInteger', () => {
     expect(BigFixed(3.5).toInteger('floor')).toEqual(BigFixed(3));
     expect(() => BigFixed(3.5).toInteger('xxx')).toThrow('unexpected round mode "xxx"');
   });
+});
+
+test('toNumber', () => {
+  expect(BigFixed(1).div(1e9).toNumber()).toEqual(9.999999999615351e-10);
+});
+
+test('toString', () => {
+  expect(BigFixed(1).div(1e9).toString()).toEqual('0.0000000009999999999615351');
+  expect(BigFixed(1).div(1e9).toString(2)).toEqual('0.0000000000000000000000000000010001001011100000101111101000001001');
+  expect(BigFixed(1).div(1e9).toString(10)).toEqual('0.0000000009999999999615351');
+  expect(BigFixed(1).div(1e9).toString(16)).toEqual('0.000000044b82fa09');
 });
 
 test('toJSON', () => {

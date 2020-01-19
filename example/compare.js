@@ -68,7 +68,7 @@ test number: ${number},
 test count: ${count}
 `);
 
-console.log('Each duration in nano seconds (1e-9s):');
+console.log('Execution time in nano seconds(1e-9s):');
 console.log(['Operate', 'BigFixed', 'BigNumber', 'Big', 'Decimal'].map(v => `${v}`.padEnd(10, ' ')).join(''));
 for (const name of names) {
   const line = [name,

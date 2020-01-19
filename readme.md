@@ -12,22 +12,26 @@ BigFixed range: ( -Inf, -(2**(-64)) ] & 0 & [ 2**(-64), +Inf )
 
 BigFixed struct: signed BigInt <N bits integer part . 64 bits fraction part>
 
+> NOTE: this lib is calculate by binary but not decimal number, 
+
+`BigFixed(0.1).add(0.2).toString() === "0.30000000000000004"`
+
 ## [Compare](https://github.com/GeekBerry/bigFixed/blob/master/example/compare.js)
 
 ```text
 Compare of big number lib
-test number: 7639.761792834918, 
+test number: 3838.261003615915, 
 test count: 100000
 
-Each duration in nano seconds (1e-9s):
+Execution time in nano seconds(1e-9s):
 Operate   BigFixed  BigNumber Big       Decimal   
-new       3220      1830      750       1280      
-add       210       520       640       660       
-sub       250       520       910       910       
-mul       620       890       2370      1210      
-div       1610      6550      12930     5800      
-pow       740       2210      6920      4210      
-str       1960      430       670       420      
+new       580       750       410       690       
+add       90        210       240       270       
+sub       120       300       490       500       
+mul       210       420       1220      710       
+div       800       3760      6720      3360      
+pow       380       1360      3950      2330      
+str       530       220       410       250        
 ```
 
 

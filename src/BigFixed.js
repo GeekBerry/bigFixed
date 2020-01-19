@@ -10,18 +10,35 @@
     +--------------------------------+----------------------------------+
  */
 
-const {
-  abs,
-  slice,
-  fractionNumber,
-  compileBigInt,
-  compileBoolean,
-  compileNumber,
-  compileString,
-} = require('./util');
+const { BIG_INT_0, BIG_INT_64, UINT64_SIGN, UINT64_TWOS, UINT64_TWOS_NUMBER } = require('./util');
+const { abs, slice, compileBigInt, compileBoolean, compileNumber, compileString } = require('./util');
 
-const UINT64_HALF = BigInt(1) << BigInt(63);
-const UINT64_TWOS = BigInt(1) << BigInt(64);
+// --------------------------------------------------------------------------
+/**
+ * @private
+ * @param fracNumber {Number}
+ * @return {string}
+ *
+ * @example
+ * > _positiveFractionToString(0.1235)
+ ".1235"
+ * > _positiveFractionToString(1.1e-9)
+ ".0000000011"
+ * > _positiveFractionToString(1e-18)
+ ".000000000000000001"
+ */
+function _positiveFractionToString(fracNumber) {
+  if (fracNumber === 0) {
+    return '';
+  }
+
+  const string = fracNumber.toString();
+  const [matchExp, i, f, e] = string.match(/^(\d)\.?(\d*)e-(\d+)$/) || [];
+  if (!matchExp) {
+    return string.slice(1); // slice 1 to skip starts '0'
+  }
+  return '.' + `${i}${f}`.padStart(Number(e) + f.length, '0');
+}
 
 /**
  * Cause javascript use float64 to implement `Number`,
@@ -66,15 +83,15 @@ class BigFixed {
 
   // --------------------------------------------------------------------------
   isZero() {
-    return this.fixed === BigInt(0);
+    return this.fixed === BIG_INT_0;
   }
 
   isNegative() {
-    return this.fixed < BigInt(0);
+    return this.fixed < BIG_INT_0;
   }
 
   isInteger() {
-    return slice(this.fixed, -64) === BigInt(0);
+    return slice(this.fixed, -64) === BIG_INT_0;
   }
 
   eq(value) {
@@ -125,11 +142,11 @@ class BigFixed {
   mul(value) {
     const bn = this.clone();
     bn.fixed *= toFixed(value);
-    return bn.rShift(64);
+    return bn.rShift(BIG_INT_64);
   }
 
   div(value) {
-    const bn = this.lShift(64);
+    const bn = this.lShift(BIG_INT_64);
     bn.fixed /= toFixed(value);
     return bn;
   }
@@ -146,7 +163,7 @@ class BigFixed {
     value = BigInt(value);
 
     const bn = this.clone();
-    bn.fixed = (bn.fixed ** value) >> (BigInt(64) * value - BigInt(64));
+    bn.fixed = (bn.fixed ** value) >> (BIG_INT_64 * value - BIG_INT_64);
     return bn;
   }
 
@@ -212,7 +229,7 @@ class BigFixed {
         break;
 
       case BigFixed.ROUND:
-        if (frac >= UINT64_HALF) {
+        if (frac >= UINT64_SIGN) {
           bn.fixed += UINT64_TWOS;
         }
         break;
@@ -231,7 +248,7 @@ class BigFixed {
    * @return {number}
    */
   toNumber() {
-    return Number(this.toString());
+    return Number(this.fixed >> BIG_INT_64) + Number(slice(this.fixed, -64)) / UINT64_TWOS_NUMBER;
   }
 
   toJSON() {
@@ -239,17 +256,22 @@ class BigFixed {
   }
 
   /**
-   * @param [base=10] {number}
+   * @param [radix=10] {number}
    * @return {string}
    */
-  toString(base = 10) {
+  toString(radix = 10) {
     const absFixed = abs(this.fixed);
 
     const signString = this.isNegative() ? '-' : '';
-    const int = (absFixed >> BigInt(64));
-    const fracNumber = fractionNumber(slice(absFixed, -64));
+    const bigInt = absFixed >> BIG_INT_64;
+    const fracNumber = Number(slice(absFixed, -64)) / UINT64_TWOS_NUMBER;
 
-    return `${signString}${int.toString(base)}${fracNumber.toString(base).slice(1)}`; // slice 1 to skip '0'
+    if (radix === 10) {
+      // trans exponential string to digit string
+      return `${signString}${bigInt.toString(radix)}${_positiveFractionToString(fracNumber)}`;
+    } else {
+      return `${signString}${bigInt.toString(radix)}${fracNumber.toString(radix).slice(1)}`;
+    }
   }
 }
 
