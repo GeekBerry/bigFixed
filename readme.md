@@ -1,3 +1,5 @@
+![img](https://github.com/GeekBerry/bigFixed/blob/master/bigFixed.png)
+
 # BigFixed
 
 A pure javascript big fixed point number library base on `BigInt`.
